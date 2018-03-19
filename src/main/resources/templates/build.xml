@@ -1,0 +1,43 @@
+<project name="${project.name}" basedir="."
+         xmlns:if="ant:if"
+         xmlns:unless="ant:unless">
+    <description>
+        Generate Java code from Ecore models using the Eclipse Ant Runner
+    </description>
+
+    <dirname property="antfile.dir" file="\${ant.file}"/>
+
+    <!-- Input Ecore model location (supplied from environment, if present) -->
+    <property unless:set="model.dir" name="model.dir" location="\${antfile.dir}/model"/>
+
+    <!-- Extract the output location from environment properties, if present -->
+    <dirname if:set="output.path" property="output.dir" file="\${output.path}"/>
+    <basename if:set="output.path" property="source.dir" file="\${output.path}"/>
+
+    <!-- Default values for output location -->
+    <property unless:set="output.dir" name="output.dir" location="\${antfile.dir}"/>
+    <property unless:set="source.dir" name="source.dir" value="src-gen"/>
+
+    <echo message="Model directory:  \${model.dir}"/>
+    <echo message="Output directory: \${output.dir}"/>
+    <echo message="Source directory: \${source.dir}"/>
+
+    <!-- Run the actual code generation -->
+    <emf.Ecore2Java model="\${model.dir}/${model.ecore}"
+                    genModel="\${model.dir}/${model.genmodel}"
+                    modelProject="\${output.dir}"
+                    modelProjectFragmentPath="\${source.dir}"
+                    generateEditProject="false"
+                    generateEditorProject="false"
+                    generateTestsProject="false"
+                    autoBuild="false">
+        <arg line="-package ${package.nsUri} ${package.name} ${package.nsPrefix}"/>
+    </emf.Ecore2Java>
+
+    <!-- Remove Eclipse/OSGi-specific files -->
+    <delete file="\${output.dir}/plugin.properties"/>
+    <delete file="\${output.dir}/plugin.xml"/>
+    <delete includeEmptyDirs="true">
+        <fileset dir="\${output.dir}/META-INF"/>
+    </delete>
+</project>
