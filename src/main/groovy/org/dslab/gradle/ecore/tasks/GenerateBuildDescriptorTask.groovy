@@ -24,6 +24,7 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
@@ -52,7 +53,10 @@ class GenerateBuildDescriptorTask extends DefaultTask {
     @InputDirectory
     final DirectoryProperty modelPath = newInputDirectory()
 
+    @Internal
     FileCollection models
+
+    @Internal
     FileCollection genmodels
 
     private final LogLevel level = LogLevel.DEBUG
