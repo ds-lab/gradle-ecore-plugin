@@ -60,7 +60,9 @@ class EcorePlugin implements Plugin<Project> {
             // Clean up the output directory before generating sources to prevent problems with renamed/deleted model elements
             task.doFirst {
                 logger.info("Cleaning up generated sources directory")
-                project.tasks['cleanEmfCodegen'].execute()
+                // TODO: Task.execute() is deprecated -- replace
+                def cleanTask = project.tasks['cleanEmfCodegen']
+                cleanTask.getActions().forEach { it.execute(cleanTask) }
             }
 
             task.buildScript = extension.buildScript
