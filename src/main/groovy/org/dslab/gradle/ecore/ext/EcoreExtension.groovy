@@ -31,6 +31,7 @@ class EcoreExtension {
     private static final String DEFAULT_BUILD_SCRIPT = 'build.xml'
     private static final String DEFAULT_MODEL_PATH = 'model'
     private static final Path DEFAULT_OUTPUT_PATH = Paths.get('src', 'generated', 'java')
+    private static final Path DEFAULT_RESOURCES_PATH = Paths.get('src', 'generated', 'resources')
 
     /**
      * The Eclipse binary to be invoked for code generation
@@ -60,9 +61,19 @@ class EcoreExtension {
     final DirectoryProperty outputDir
 
     /**
+     * The target directory for generated resources
+     */
+    final DirectoryProperty resourcesDir
+
+    /**
      * Should EMF compile-time dependencies be automatically added?
      */
     final Property<Boolean> addDependencies
+
+    /**
+     * Determine handling of genmodel updates
+     */
+    final Property<String> reconcileGenmodel
 
     final Project project
 
@@ -83,7 +94,13 @@ class EcoreExtension {
         outputDir = project.layout.directoryProperty()
         outputDir.set(project.file(DEFAULT_OUTPUT_PATH))
 
+        resourcesDir = project.layout.directoryProperty()
+        resourcesDir.set(project.file(DEFAULT_RESOURCES_PATH))
+
         addDependencies = project.objects.property(Boolean)
         addDependencies.set(true)
+
+        reconcileGenmodel = project.objects.property(String)
+        reconcileGenmodel.set("reload")
     }
 }

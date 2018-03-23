@@ -23,12 +23,8 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.LogLevel
-import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
-
-import java.nio.file.Paths
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.*
 
 /**
  * Generates an Ant build script to generate Java source code from Ecore models.
@@ -40,8 +36,8 @@ import java.nio.file.Paths
  * For details on the Ant generator tasks provided by Eclipse EMF, refer to the
  * following Javadoc pages:
  * <ul>
- *   <li><a href="http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/index.html?org/eclipse/emf/ant/taskdefs/codegen/ecore/GeneratorTask.html">GeneratorTask</a></li>
- *   <li><a href="http://download.eclipse.org/modeling/emf/emf/javadoc/2.9.0/index.html?org/eclipse/emf/importer/ecore/taskdefs/EcoreGeneratorTask.html">EcoreGeneratorTask</a></li>
+ *   <li><a href="http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/index.html?org/eclipse/emf/ant/taskdefs/codegen/ecore/GeneratorTask.html">GeneratorTask</a></li>
+ *   <li><a href="http://download.eclipse.org/modeling/emf/emf/javadoc/2.11/index.html?org/eclipse/emf/importer/ecore/taskdefs/EcoreGeneratorTask.html">EcoreGeneratorTask</a></li>
  * </ul>
  *
  * @author Adrian Rumpold (a.rumpold@ds-lab.org)
@@ -54,12 +50,22 @@ class GenerateBuildDescriptorTask extends DefaultTask {
     final DirectoryProperty modelPath = newInputDirectory()
 
     @Internal
+    final DirectoryProperty outputDir = newOutputDirectory()
+
+    @Input
+    final Property<String> reconcileGenmodel
+
+    @Internal
     FileCollection models
 
     @Internal
     FileCollection genmodels
 
     private final LogLevel level = LogLevel.DEBUG
+
+    GenerateBuildDescriptorTask() {
+        reconcileGenmodel = project.objects.property(String)
+    }
 
     @TaskAction
     def generateDescriptor() {
@@ -95,7 +101,7 @@ class GenerateBuildDescriptorTask extends DefaultTask {
         def gmXml = new XmlSlurper().parse(genmodel)
         def pkgName = gmXml.genPackages.@basePackage
 
-        def modelBase = Paths.get(modelPath.asFile.get().toURI())
+        def projectBase = project.projectDir.toPath()
 
         // Data binding for template rendering
         def binding = [
@@ -106,9 +112,15 @@ class GenerateBuildDescriptorTask extends DefaultTask {
                         name    : pkgName,
                 ],
                 model  : [
-                        ecore   : modelBase.relativize(Paths.get(model.toURI())),
-                        genmodel: modelBase.relativize(Paths.get(genmodel.toURI())),
+                        reconcileGenmodel: reconcileGenmodel.get(),
+                        ecore            : projectBase.relativize(model.toPath()),
+                        genmodel         : projectBase.relativize(genmodel.toPath()),
+                ],
+                output : [
+                        folder: projectBase.relativize(outputDir.asFile.get().toPath()),
+                        resourceDir: projectBase.relativize(project.sourceSets.generated.resources.srcDirs[0].toPath())
                 ]
+
         ]
 
         def template = getClass().getResource("/templates/build.xml")

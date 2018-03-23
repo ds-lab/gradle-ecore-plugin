@@ -49,6 +49,9 @@ class EmfCodegenTask extends DefaultTask {
     @OutputDirectory
     final DirectoryProperty outputDir = newOutputDirectory()
 
+    @OutputDirectory
+    final DirectoryProperty resourcesDir = newOutputDirectory()
+
     @TaskAction
     void generate() {
         logger.log(level, "---- emfCodegen() ----")
@@ -56,6 +59,7 @@ class EmfCodegenTask extends DefaultTask {
         logger.log(level, "modelDir: {}", modelDir)
         logger.log(level, "buildScript: {}", buildScript)
         logger.log(level, "outputDir: {}", outputDir)
+        logger.log(level, "resourcesDir: {}", resourcesDir)
 
         assert eclipseCommand.asFile.getOrNull()?.canExecute()
 
@@ -65,8 +69,7 @@ class EmfCodegenTask extends DefaultTask {
                     '-noSplash',
                     '-data', workspacePath.get(),
                     '-application', 'org.eclipse.ant.core.antRunner',
-                    '-Dmodel.dir="' + modelDir.asFile.get() + '"',
-                    '-Doutput.path="' + outputDir.asFile.get() + '"'
+                    '-buildfile', buildScript.asFile.get()
         }
     }
 }

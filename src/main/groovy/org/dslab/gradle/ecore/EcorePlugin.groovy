@@ -48,6 +48,8 @@ class EcorePlugin implements Plugin<Project> {
         def buildDescriptorTask = project.tasks.create("buildDescriptor", GenerateBuildDescriptorTask) { task ->
             task.descriptor = extension.buildScript
             task.modelPath = extension.modelPath
+            task.reconcileGenmodel = extension.reconcileGenmodel
+            task.outputDir = extension.outputDir
         }
         buildDescriptorTask.group = TASK_GROUP
         buildDescriptorTask.description = "Generate an Ant build script for Ecore2Java code generation"
@@ -70,6 +72,7 @@ class EcorePlugin implements Plugin<Project> {
             task.workspacePath = extension.workspacePath
             task.modelDir = extension.modelPath
             task.outputDir = extension.outputDir
+            task.resourcesDir = extension.resourcesDir
         }
         codegenTask.group = TASK_GROUP
         codegenTask.description = "Run the Ecore2Java code generation using a headless Eclipse instance"
