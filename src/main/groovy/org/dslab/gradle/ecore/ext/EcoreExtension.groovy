@@ -75,6 +75,11 @@ class EcoreExtension {
      */
     final Property<String> reconcileGenmodel
 
+    /**
+     * Clean the output directory before generating sources automatically
+     */
+    final Property<Boolean> autoclean
+
     final Project project
 
     EcoreExtension(Project project) {
@@ -102,5 +107,8 @@ class EcoreExtension {
 
         reconcileGenmodel = project.objects.property(String)
         reconcileGenmodel.set("reload")
+
+        autoclean = project.objects.property(Boolean)
+        autoclean.set(true)
     }
 }

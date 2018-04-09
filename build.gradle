@@ -40,8 +40,8 @@ dependencies {
     compile localGroovy()
 }
 
-group "org.dslab.gradle"
-version "1.0.3"
+group 'org.dslab.gradle'
+version '1.0.4'
 
 pluginBundle {
     website = 'https://github.com/ds-lab/gradle-ecore-plugin'

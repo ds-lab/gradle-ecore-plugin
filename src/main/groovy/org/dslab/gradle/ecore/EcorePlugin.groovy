@@ -59,14 +59,6 @@ class EcorePlugin implements Plugin<Project> {
             // Ant build descriptor must be generated before code generation can run
             task.dependsOn buildDescriptorTask
 
-            // Clean up the output directory before generating sources to prevent problems with renamed/deleted model elements
-            task.doFirst {
-                logger.info("Cleaning up generated sources directory")
-                // TODO: Task.execute() is deprecated -- replace
-                def cleanTask = project.tasks['cleanEmfCodegen']
-                cleanTask.getActions().forEach { it.execute(cleanTask) }
-            }
-
             task.buildScript = extension.buildScript
             task.eclipseCommand = extension.eclipsePath
             task.workspacePath = extension.workspacePath
@@ -105,6 +97,11 @@ class EcorePlugin implements Plugin<Project> {
 
             // Clean up includes removing the build descriptor and generated sources
             project.tasks['clean'].dependsOn 'cleanEmfCodegen', 'cleanBuildDescriptor'
+            if (extension.autoclean.get()) {
+                project.logger.info("Cleaning up output folder before code generation")
+                // Clean up the output directory before generating sources to prevent problems with renamed/deleted model elements
+                project.tasks['emfCodegen'].dependsOn project.tasks['cleanEmfCodegen']
+            }
         }
     }
 }
