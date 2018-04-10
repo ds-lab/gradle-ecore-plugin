@@ -74,7 +74,7 @@ class EcorePlugin implements Plugin<Project> {
         project.sourceSets.create("generated", {
             java.srcDirs = [extension.outputDir.get()]
         })
-        project.tasks['generatedClasses'].dependsOn codegenTask
+        project.tasks['compileGeneratedJava'].dependsOn codegenTask
 
         // Java compilation depends on the generated code
         project.dependencies {
