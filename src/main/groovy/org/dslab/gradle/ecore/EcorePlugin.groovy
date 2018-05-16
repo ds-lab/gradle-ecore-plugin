@@ -21,6 +21,7 @@ import org.dslab.gradle.ecore.tasks.EmfCodegenTask
 import org.dslab.gradle.ecore.tasks.GenerateBuildDescriptorTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPlugin
 
 /**
  * Provides code generation from Ecore models and integration with non-generated Java sources.
@@ -40,8 +41,8 @@ class EcorePlugin implements Plugin<Project> {
         extension = project.extensions.create(EXTENSION_NAME, EcoreExtension, project)
 
         /* Set up plugin dependency to Java plugin */
-        if (!project.plugins.findPlugin(org.gradle.api.plugins.JavaPlugin)) {
-            project.pluginManager.apply(org.gradle.api.plugins.JavaPlugin)
+        if (!project.plugins.findPlugin(JavaPlugin)) {
+            project.pluginManager.apply(JavaPlugin)
         }
 
         /* Tasks for Ant build script generation */
@@ -87,6 +88,7 @@ class EcorePlugin implements Plugin<Project> {
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.common:2.12.0")
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.ecore:2.12.0")
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.12.0")
+                project.dependencies.add("implementation", project.configurations.generatedImplementation)
             }
 
             // Generated classes must be bundled with the resulting Jar
