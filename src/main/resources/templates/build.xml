@@ -42,6 +42,6 @@
 
     <!-- Move manifest to appropriate resources dir -->
     <move includeEmptyDirs="true" todir="${output.resourceDir}/META-INF">
-        <fileset dir="META-INF"/>
+        <fileset dir="${output.folder}/../META-INF"/>
     </move>
 </project>
