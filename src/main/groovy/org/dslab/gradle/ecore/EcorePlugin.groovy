@@ -51,6 +51,7 @@ class EcorePlugin implements Plugin<Project> {
             task.modelPath = extension.modelPath
             task.reconcileGenmodel = extension.reconcileGenmodel
             task.outputDir = extension.outputDir
+            task.removeOSGiDescriptors = extension.removeOSGiDescriptors
         }
         buildDescriptorTask.group = TASK_GROUP
         buildDescriptorTask.description = "Generate an Ant build script for Ecore2Java code generation"
@@ -88,8 +89,8 @@ class EcorePlugin implements Plugin<Project> {
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.common:2.12.0")
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.ecore:2.12.0")
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.12.0")
-                project.dependencies.add("implementation", project.configurations.generatedImplementation)
             }
+            project.dependencies.add("implementation", project.configurations.generatedImplementation)
 
             // Generated classes must be bundled with the resulting Jar
             project.jar {
@@ -102,7 +103,8 @@ class EcorePlugin implements Plugin<Project> {
             if (extension.autoclean.get()) {
                 project.logger.info("Cleaning up output folder before code generation")
                 // Clean up the output directory before generating sources to prevent problems with renamed/deleted model elements
-                project.tasks['emfCodegen'].dependsOn project.tasks['cleanEmfCodegen']
+                //project.tasks['emfCodegen'].dependsOn project.tasks['cleanEmfCodegen']
+                //buildDescriptorTask.finalizedBy 'cleanEmfCodegen'
             }
         }
     }

@@ -80,6 +80,11 @@ class EcoreExtension {
      */
     final Property<Boolean> autoclean
 
+    /**
+     * Should OSGi-related generated files be removed?
+     */
+    final Property<Boolean> removeOSGiDescriptors
+
     final Project project
 
     EcoreExtension(Project project) {
@@ -110,5 +115,8 @@ class EcoreExtension {
 
         autoclean = project.objects.property(Boolean)
         autoclean.set(true)
+
+        removeOSGiDescriptors = project.objects.property(Boolean)
+        removeOSGiDescriptors.set(true)
     }
 }

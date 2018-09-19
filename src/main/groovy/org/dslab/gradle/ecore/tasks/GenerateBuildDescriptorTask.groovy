@@ -53,7 +53,10 @@ class GenerateBuildDescriptorTask extends DefaultTask {
     final DirectoryProperty outputDir = newOutputDirectory()
 
     @Input
-    final Property<String> reconcileGenmodel
+    Property<String> reconcileGenmodel
+
+    @Input
+    Property<Boolean> removeOSGiDescriptors
 
     @Internal
     FileCollection models
@@ -75,6 +78,8 @@ class GenerateBuildDescriptorTask extends DefaultTask {
         logger.log(level, "Output file: {}", descriptor)
         logger.log(level, "Ecore models: {}", models)
         logger.log(level, "Genmodel: {}", genmodels)
+        logger.log(level, "reconcileGenmodel: {}", reconcileGenmodel)
+        logger.log(level, "removeOSGiDescriptors: {}", removeOSGiDescriptors)
         logger.log(level, '-' * 40)
 
         models.forEach { model ->
@@ -119,8 +124,8 @@ class GenerateBuildDescriptorTask extends DefaultTask {
                 output : [
                         folder: projectBase.relativize(outputDir.asFile.get().toPath()),
                         resourceDir: projectBase.relativize(project.sourceSets.generated.resources.srcDirs[0].toPath())
-                ]
-
+                ],
+                removeOSGiDescriptors: removeOSGiDescriptors.get()
         ]
 
         def template = getClass().getResource("/templates/build.xml")
