@@ -34,23 +34,23 @@ class EmfCodegenTask extends DefaultTask {
     private LogLevel level = LogLevel.DEBUG
 
     @Internal
-    final RegularFileProperty eclipseCommand = newInputFile()
+    RegularFileProperty eclipseCommand = newInputFile()
 
     @Internal
-    final DirectoryProperty workspacePath = newInputDirectory()
+    DirectoryProperty workspacePath = newInputDirectory()
 
     @InputDirectory
     @SkipWhenEmpty
-    final DirectoryProperty modelDir = newInputDirectory()
+    DirectoryProperty modelDir = newInputDirectory()
 
     @InputFile
-    final RegularFileProperty buildScript = newInputFile()
+    RegularFileProperty buildScript = newInputFile()
 
     @OutputDirectory
-    final DirectoryProperty outputDir = newOutputDirectory()
+    DirectoryProperty outputDir = newOutputDirectory()
 
     @OutputDirectory
-    final DirectoryProperty resourcesDir = newOutputDirectory()
+    DirectoryProperty resourcesDir = newOutputDirectory()
 
     @TaskAction
     void generate() {
