@@ -41,10 +41,10 @@
         <!-- Remove Eclipse/OSGi-specific files -->
         <delete file="plugin.properties"/>
         <delete file="plugin.xml"/>
-    <gsp:scriptlet>}</gsp:scriptlet>
 
-    <!-- Move manifest to appropriate resources dir -->
-    <move includeEmptyDirs="true" todir="${output.resourceDir}/META-INF">
-        <fileset dir="META-INF"/>
-    </move>
+        <!-- Move manifest to appropriate resources dir -->
+        <move includeEmptyDirs="true" todir="${output.resourceDir}/META-INF">
+            <fileset dir="META-INF"/>
+        </move>
+    <gsp:scriptlet>}</gsp:scriptlet>
 </project>
