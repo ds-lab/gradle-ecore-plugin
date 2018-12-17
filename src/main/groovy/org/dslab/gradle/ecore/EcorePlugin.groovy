@@ -30,7 +30,7 @@ import org.gradle.api.plugins.JavaPlugin
  */
 class EcorePlugin implements Plugin<Project> {
     static final String EXTENSION_NAME = 'ecore'
-    static final String TASK_GROUP = "EMF Ecore code generation tasks"
+    static final String TASK_GROUP = "EMF Ecore code generation"
 
     private EcoreExtension extension
     private Project project

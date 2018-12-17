@@ -90,21 +90,21 @@ class EcoreExtension {
     EcoreExtension(Project project) {
         this.project = project
 
-        eclipsePath = project.layout.fileProperty()
+        eclipsePath = project.objects.fileProperty()
 
-        workspacePath = project.layout.directoryProperty()
+        workspacePath = project.objects.directoryProperty()
         workspacePath.set(project.rootDir)
 
-        buildScript = project.layout.fileProperty()
+        buildScript = project.objects.fileProperty()
         buildScript.set(project.file(DEFAULT_BUILD_SCRIPT))
 
-        modelPath = project.layout.directoryProperty()
+        modelPath = project.objects.directoryProperty()
         modelPath.set(project.file(DEFAULT_MODEL_PATH))
 
-        outputDir = project.layout.directoryProperty()
+        outputDir = project.objects.directoryProperty()
         outputDir.set(project.file(DEFAULT_OUTPUT_PATH))
 
-        resourcesDir = project.layout.directoryProperty()
+        resourcesDir = project.objects.directoryProperty()
         resourcesDir.set(project.file(DEFAULT_RESOURCES_PATH))
 
         addDependencies = project.objects.property(Boolean)
