@@ -44,13 +44,13 @@ import org.gradle.api.tasks.*
  */
 class GenerateBuildDescriptorTask extends DefaultTask {
     @OutputFile
-    RegularFileProperty descriptor = newOutputFile()
+    RegularFileProperty descriptor = objects.newOutputFile()
 
     @InputDirectory
-    DirectoryProperty modelPath = newInputDirectory()
+    DirectoryProperty modelPath = objects.newInputDirectory()
 
     @Internal
-    DirectoryProperty outputDir = newOutputDirectory()
+    DirectoryProperty outputDir = objects.newOutputDirectory()
 
     @Input
     Property<String> reconcileGenmodel
