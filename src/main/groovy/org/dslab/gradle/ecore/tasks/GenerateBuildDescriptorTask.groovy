@@ -44,13 +44,13 @@ import org.gradle.api.tasks.*
  */
 class GenerateBuildDescriptorTask extends DefaultTask {
     @OutputFile
-    RegularFileProperty descriptor = project.objects.newOutputFile()
+    RegularFileProperty descriptor = project.objects.fileProperty()
 
     @InputDirectory
-    DirectoryProperty modelPath = project.objects.newInputDirectory()
+    DirectoryProperty modelPath = project.objects.directoryProperty()
 
     @Internal
-    DirectoryProperty outputDir = project.objects.newOutputDirectory()
+    DirectoryProperty outputDir = project.objects.directoryProperty()
 
     @Input
     Property<String> reconcileGenmodel
@@ -110,19 +110,19 @@ class GenerateBuildDescriptorTask extends DefaultTask {
 
         // Data binding for template rendering
         def binding = [
-                project: project,
-                package: [
+                project              : project,
+                package              : [
                         nsUri   : nsUri,
                         nsPrefix: nsPrefix,
                         name    : pkgName,
                 ],
-                model  : [
+                model                : [
                         reconcileGenmodel: reconcileGenmodel.get(),
                         ecore            : projectBase.relativize(model.toPath()),
                         genmodel         : projectBase.relativize(genmodel.toPath()),
                 ],
-                output : [
-                        folder: projectBase.relativize(outputDir.asFile.get().toPath()),
+                output               : [
+                        folder     : projectBase.relativize(outputDir.asFile.get().toPath()),
                         resourceDir: projectBase.relativize(project.sourceSets.generated.resources.srcDirs[0].toPath())
                 ],
                 removeOSGiDescriptors: removeOSGiDescriptors.get()
