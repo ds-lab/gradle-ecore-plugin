@@ -80,7 +80,7 @@ class EcorePlugin implements Plugin<Project> {
 
         // Java compilation depends on the generated code
         project.dependencies {
-            implementation project.sourceSets.generated.output
+            compile project.sourceSets.generated.output
         }
 
         project.afterEvaluate {
@@ -90,7 +90,7 @@ class EcorePlugin implements Plugin<Project> {
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.ecore:2.12.0")
                 project.dependencies.add("generatedImplementation", "org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.12.0")
             }
-            project.dependencies.add("implementation", project.configurations.generatedImplementation)
+            project.dependencies.add("compile", project.configurations.generatedImplementation)
 
             // Generated classes must be bundled with the resulting Jar
             project.jar {
